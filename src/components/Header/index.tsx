@@ -6,8 +6,8 @@ export function Header() {
             <nav className='w-4/5 flex justify-between items-center'>
                 <Link
                     href={'#'}
-                    className='text-2xl font-bold hover:text-stone-400 transition-all'>
-                    <h1>STEFF ANALOG</h1>
+                    className='text-2xl font-bold hover:text-violet-500 transition-all'>
+                    <h1>photolove</h1>
                 </Link>
                 <Link
                     href={'#'}
