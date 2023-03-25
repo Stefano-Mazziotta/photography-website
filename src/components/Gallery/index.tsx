@@ -22,7 +22,7 @@ export function Gallery() {
 
 
     return (
-        <section className='w-full h-screen flex justify-center h-auto'>
+        <section className='w-full flex justify-center h-auto'>
             <article className='w-4/5 flex flex-col items-center'>
 
                 <Tab.Group>
