@@ -1,7 +1,14 @@
 import { Tab } from '@headlessui/react';
 import classNames from 'classnames';
 import Masonry from 'react-masonry-css';
-classNames
+import Image from 'next/image';
+
+import david1 from '../../../public/david.jpg';
+import david2 from '../../../public/david-2.jpg';
+import catedralle from '../../../public/catedralle.jpg';
+import catedralle2 from '../../../public/catedralle-2.jpg';
+import pieta from '../../../public/pieta.jpg';
+import autoretrato from '../../../public/autoretrato.jpg';
 
 const tabs = [
     {
@@ -18,8 +25,16 @@ const tabs = [
     },
 ]
 
-export function Gallery() {
+const images = [
+    david1,
+    david2,
+    catedralle,
+    catedralle2,
+    pieta,
+    autoretrato
+]
 
+export function Gallery() {
 
     return (
         <section className='w-full flex justify-center h-auto'>
@@ -44,12 +59,9 @@ export function Gallery() {
                     <Tab.Panels className='bg-stone-900 bg-opacity-80 h-full max-w-[1000px] w-full p-2 sm:p-4'>
                         <Tab.Panel>
                             <Masonry breakpointCols={2} className='flex gap-3' columnClassName=''>
-                                <img src='/autoretrato.jpg' alt='autoretrato' className='my-3' />
-                                <img src='/david.jpg' alt='david' className='my-3' />
-                                <img src='/catedralle-2.jpg' alt='catedralle' className='my-3' />
-                                <img src='/catedralle.jpg' alt='catedralle' className='my-3' />
-                                <img src='/david-2.jpg' alt='david' className='my-3' />
-                                <img src='/pieta.jpg' alt='la pieta' className='my-3' />
+                                {images.map((image) => (
+                                    <Image key={image.src} className='my-3' src={image} alt='el david' placeholder='blur' />
+                                ))}
                             </Masonry>
                         </Tab.Panel>
                         <Tab.Panel>Content 2</Tab.Panel>
