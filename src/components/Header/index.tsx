@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export function Header() {
     return (
-        <header className='w-full py-4 bg-stone-900 flex justify-center shadow-lg sticky top-0'>
+        <header className='w-full py-4 bg-stone-900 flex justify-center shadow-lg sticky top-0 z-10'>
             <nav className='w-4/5 flex justify-between items-center'>
                 <Link
                     href={'#'}

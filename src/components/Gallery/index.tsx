@@ -31,12 +31,12 @@ const tabs = [
         display: 'All'
     },
     {
-        key: 'oceans',
-        display: 'Oceans'
+        key: 'italy',
+        display: 'Italy'
     },
     {
-        key: 'forests',
-        display: 'Forests'
+        key: 'argentina',
+        display: 'Argentina'
     },
 ]
 
@@ -80,10 +80,11 @@ export function Gallery() {
                     <Tab.Panels className='bg-stone-900 bg-opacity-80 h-full max-w-[1000px] w-full p-2 sm:p-4'>
                         <Tab.Panel>
                             <Masonry breakpointCols={2} className='flex gap-3' columnClassName=''>
+
                                 {images.map((image, index) => (
                                     <Image
                                         key={image.src}
-                                        className='my-3 cursor-pointer'
+                                        className='my-3 cursor-pointer opacity-[.60] transition-all hover:opacity-100'
                                         src={image}
                                         alt={image.src}
                                         placeholder='blur'
