@@ -7,7 +7,7 @@ export function Header() {
                 <Link
                     href={'#'}
                     className='text-2xl font-bold hover:text-violet-500 transition-all'>
-                    <h1>photolove</h1>
+                    <h1>photoexample</h1>
                 </Link>
                 <Link
                     href={'#'}
