@@ -5,6 +5,7 @@ import { GetStaticProps } from 'next';
 
 import nodeFetch from 'node-fetch';
 import { createApi } from 'unsplash-js';
+import lqip from 'lqip-modern';
 
 import { Tab } from '@headlessui/react';
 import classNames from 'classnames';
@@ -48,54 +49,13 @@ export const getStaticProps: GetStaticProps<HomeProps> = async () => {
     fetch: nodeFetch as unknown as typeof fetch,
   });
 
-  const italy = await unsplash.search.getPhotos({
-    query: 'italy',
-  })
-
-  const argentina = await unsplash.search.getPhotos({
-    query: 'argentina',
-  })
-
-  const italyResults: Photo[] = [];
-
-  if (italy.type === 'success') {
-    const { results } = italy.response;
-    const mappedItaly = results.map((image, index) => ({
-      src: image.urls.full,
-      thumb: image.urls.thumb,
-      width: image.width,
-      height: image.height,
-      alt: image.alt_description ?? `italy-img-${index}`,
-      blurDataURL: image.blur_hash ?? '',
-      likes: image.likes ?? 0,
-    }))
-    italyResults.push(...mappedItaly)
-  } else {
-    console.error('could not get Italy photos')
-  }
-
-  const argentinaResults: Photo[] = [];
-
-  if (argentina.type === 'success') {
-    const { results } = argentina.response;
-    const mappedArgentina = results.map((image, index) => ({
-      src: image.urls.full,
-      thumb: image.urls.thumb,
-      width: image.width,
-      height: image.height,
-      alt: image.alt_description ?? `argentina-img-${index}`,
-      blurDataURL: image.blur_hash ?? '',
-      likes: image.likes ?? 0,
-    }))
-    argentinaResults.push(...mappedArgentina)
-  } else {
-    console.error('could not get Argentina photos')
-  }
+  const italyPhotos = await getPhotos(unsplash, 'italy')
+  const argentinaPhotos = await getPhotos(unsplash, 'argentina')
 
   return {
     props: {
-      italy: italyResults,
-      argentina: argentinaResults
+      italy: italyPhotos,
+      argentina: argentinaPhotos
     },
   };
 }
@@ -157,4 +117,47 @@ export default function Home({ italy, argentina }: HomeProps) {
       </main>
     </>
   );
+}
+
+
+async function getPhotos(clientInstance: ReturnType<typeof createApi>, query: string): Promise<Photo[]> {
+
+  const photosResults: Photo[] = [];
+
+  const responseApi = await clientInstance.search.getPhotos({
+    query
+  })
+
+  if (responseApi.type != 'success') return photosResults
+
+  const { results } = responseApi.response;
+
+  const mappedPhotos = results.map((photo, index) => ({
+    src: photo.urls.full,
+    thumb: photo.urls.thumb,
+    width: photo.width,
+    height: photo.height,
+    alt: photo.alt_description ?? `italy-img-${index}`,
+    likes: photo.likes ?? 0,
+  }))
+
+  const photosArrWithDataUrl: Photo[] = [];
+
+  for (const photo of mappedPhotos) {
+    const blurDataURL = await getDataUrl(photo.src)
+    photosArrWithDataUrl.push({ ...photo, blurDataURL })
+  }
+
+  photosResults.push(...photosArrWithDataUrl)
+
+  return photosResults
+}
+
+async function getDataUrl(url: string) {
+  const imgData = await fetch(url)
+
+  const arrayBufferData = await imgData.arrayBuffer()
+  const lqipData = await lqip(Buffer.from(arrayBufferData))
+
+  return lqipData.metadata.dataURIBase64
 }
