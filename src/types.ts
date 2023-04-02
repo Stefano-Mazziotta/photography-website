@@ -13,3 +13,7 @@ export type HomeProps = {
     argentina: Photo[];
     steffanalog: Photo[];
 }
+
+export type GalleryProps = {
+    photos: Photo[];
+};

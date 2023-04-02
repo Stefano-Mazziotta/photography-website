@@ -5,24 +5,21 @@ import Masonry from 'react-masonry-css';
 
 import type { LightGallery } from 'lightgallery/lightgallery';
 import LightGalleryComponent from 'lightgallery/react';
-// import styles
+
+// import styles - lightgallery
 import 'lightgallery/css/lightgallery.css';
 import 'lightgallery/css/lg-zoom.css';
 import 'lightgallery/css/lg-thumbnail.css';
-// import plugins if you need
+
+// import plugins if you need - lightgallery
 import lgThumbnail from 'lightgallery/plugins/thumbnail';
 import lgZoom from 'lightgallery/plugins/zoom';
 import lgVideo from 'lightgallery/plugins/video';
 
-import { Photo } from '@/types';
-
-type GalleryProps = {
-    photos: Photo[];
-};
+import { GalleryProps } from '@/types';
 
 export function Gallery({ photos }: GalleryProps) {
     const lightboxRef = useRef<LightGallery | null>(null);
-
 
     const handleInitLightGallery = (ref: any) => {
         lightboxRef.current = ref.instance
