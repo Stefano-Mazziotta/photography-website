@@ -35,6 +35,7 @@ export const getStaticProps: GetStaticProps<HomeProps> = async () => {
       argentina: argentinaPhotos,
       steffanalog: steffMzzttPhotos
     },
+    revalidate: 10,
   };
 }
 

@@ -9,4 +9,6 @@ Nextjs project.
 6. Build a masonry grid ✅
 7. Build the Lightbox ✅
 8. Bring in live photos from Unsplash ✅
-9. Enable ISR with Next.js to grab top 10 images.
+9. Enable ISR with Next.js to grab top 10 images. ✅
+
+Deployed https://photography-website-henna.vercel.app/
