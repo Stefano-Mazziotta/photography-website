@@ -5,42 +5,18 @@ import { GetStaticProps } from 'next';
 
 import nodeFetch from 'node-fetch';
 import { createApi } from 'unsplash-js';
-import lqip from 'lqip-modern';
 
 import { Tab } from '@headlessui/react';
 import classNames from 'classnames';
 
-import { Photo } from '@/types';
+import { HomeProps } from '@/types';
+import { getPhotos, getUserPhotos } from '@/services/photos.service';
 
 import { Header } from '@/components/Header';
 import { Gallery } from '@/components/Gallery';
 import { Footer } from '@/components/Footer';
 
-
-type CreateApi = ReturnType<typeof createApi>;
-type SearchPhotos = CreateApi['search'];
-type GetPhotos = SearchPhotos['getPhotos'];
-type PhotoResponse = Awaited<ReturnType<GetPhotos>>;
-
-type HomeProps = {
-  italy: Photo[];
-  argentina: Photo[]
-}
-
-const tabs = [
-  {
-    key: 'all',
-    display: 'All'
-  },
-  {
-    key: 'italy',
-    display: 'Italy'
-  },
-  {
-    key: 'argentina',
-    display: 'Argentina'
-  },
-]
+import { tabs } from '@/constants';
 
 export const getStaticProps: GetStaticProps<HomeProps> = async () => {
 
@@ -51,16 +27,18 @@ export const getStaticProps: GetStaticProps<HomeProps> = async () => {
 
   const italyPhotos = await getPhotos(unsplash, 'italy')
   const argentinaPhotos = await getPhotos(unsplash, 'argentina')
+  const steffMzzttPhotos = await getUserPhotos(unsplash, 'steffmzztt')
 
   return {
     props: {
       italy: italyPhotos,
-      argentina: argentinaPhotos
+      argentina: argentinaPhotos,
+      steffanalog: steffMzzttPhotos
     },
   };
 }
 
-export default function Home({ italy, argentina }: HomeProps) {
+export default function Home({ italy, argentina, steffanalog }: HomeProps) {
 
   // const allPhotos = useMemo(() => {
   //   const all = [...oceans, ...forests];
@@ -100,7 +78,7 @@ export default function Home({ italy, argentina }: HomeProps) {
               </Tab.List>
               <Tab.Panels className='bg-stone-900 bg-opacity-80 h-full max-w-[1000px] w-full p-2 sm:p-4'>
                 <Tab.Panel>
-                  <Gallery photos={italy}></Gallery>
+                  <Gallery photos={steffanalog}></Gallery>
                 </Tab.Panel>
                 <Tab.Panel>
                   <Gallery photos={italy} />
@@ -119,45 +97,3 @@ export default function Home({ italy, argentina }: HomeProps) {
   );
 }
 
-
-async function getPhotos(clientInstance: ReturnType<typeof createApi>, query: string): Promise<Photo[]> {
-
-  const photosResults: Photo[] = [];
-
-  const responseApi = await clientInstance.search.getPhotos({
-    query
-  })
-
-  if (responseApi.type != 'success') return photosResults
-
-  const { results } = responseApi.response;
-
-  const mappedPhotos = results.map((photo, index) => ({
-    src: photo.urls.full,
-    thumb: photo.urls.thumb,
-    width: photo.width,
-    height: photo.height,
-    alt: photo.alt_description ?? `italy-img-${index}`,
-    likes: photo.likes ?? 0,
-  }))
-
-  const photosArrWithDataUrl: Photo[] = [];
-
-  for (const photo of mappedPhotos) {
-    const blurDataURL = await getDataUrl(photo.src)
-    photosArrWithDataUrl.push({ ...photo, blurDataURL })
-  }
-
-  photosResults.push(...photosArrWithDataUrl)
-
-  return photosResults
-}
-
-async function getDataUrl(url: string) {
-  const imgData = await fetch(url)
-
-  const arrayBufferData = await imgData.arrayBuffer()
-  const lqipData = await lqip(Buffer.from(arrayBufferData))
-
-  return lqipData.metadata.dataURIBase64
-}

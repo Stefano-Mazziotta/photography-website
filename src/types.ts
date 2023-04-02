@@ -7,3 +7,9 @@ export type Photo = {
     blurDataURL: string;
     likes: number;
 };
+
+export type HomeProps = {
+    italy: Photo[];
+    argentina: Photo[];
+    steffanalog: Photo[];
+}
