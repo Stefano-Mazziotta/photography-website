@@ -40,11 +40,10 @@ export const getStaticProps: GetStaticProps<HomeProps> = async () => {
 
 export default function Home({ italy, argentina, steffanalog }: HomeProps) {
 
-  // const allPhotos = useMemo(() => {
-  //   const all = [...oceans, ...forests];
-
-  //   return all.sort((a, b) => b.likes - a.likes);
-  // }, [oceans, forests]);
+  const allPhotos = useMemo(() => {
+    const all = [...italy,...argentina,...steffanalog]
+    return all
+  }, [italy, argentina, steffanalog])
 
   return (
     <>
@@ -77,14 +76,17 @@ export default function Home({ italy, argentina, steffanalog }: HomeProps) {
                 ))}
               </Tab.List>
               <Tab.Panels className='bg-stone-900 bg-opacity-80 h-full max-w-[1000px] w-full p-2 sm:p-4'>
-                <Tab.Panel>
-                  <Gallery photos={steffanalog}></Gallery>
+              <Tab.Panel>
+                  <Gallery photos={allPhotos}></Gallery>
                 </Tab.Panel>
                 <Tab.Panel>
                   <Gallery photos={italy} />
                 </Tab.Panel>
                 <Tab.Panel>
                   <Gallery photos={argentina}></Gallery>
+                </Tab.Panel>
+                <Tab.Panel>
+                  <Gallery photos={steffanalog}></Gallery>
                 </Tab.Panel>
               </Tab.Panels>
             </Tab.Group>

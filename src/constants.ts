@@ -11,4 +11,8 @@ export const tabs = [
         key: 'argentina',
         display: 'Argentina'
     },
+    {
+        key: 'steffanalog',
+        display: 'SteffAnalog'
+    }
 ]
