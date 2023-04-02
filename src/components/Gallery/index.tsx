@@ -25,9 +25,15 @@ export function Gallery({ photos }: GalleryProps) {
         lightboxRef.current = ref.instance
     }
 
+    const breakpointColumnsObj = {
+        default: 3,
+        700: 2,
+        500: 1
+      };
+
     return (
         <>
-            <Masonry breakpointCols={2} className='flex gap-3' columnClassName=''>
+            <Masonry breakpointCols={breakpointColumnsObj} className='flex gap-3' columnClassName=''>
 
                 {photos.map((photo, index) => (
                     <Image
